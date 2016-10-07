@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
  * Class FungioGoogleCalendarExtension
  * @package Fungio\GoogleCalendarBundle\DependencyInjection
  *
- * @author Pierrick AUBIN <pierrick.aubin@siqual.fr>
+ * @author Pierrick AUBIN <fungio76@gmail.com>
  */
 class FungioGoogleCalendarExtension extends Extension
 {

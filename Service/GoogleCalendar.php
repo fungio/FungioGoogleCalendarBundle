@@ -6,7 +6,7 @@ namespace Fungio\GoogleCalendarBundle\Service;
  * Class GoogleCalendar
  * @package Fungio\GoogleCalendarBundle\Service
  *
- * @author Pierrick AUBIN <pierrick.aubin@siqual.fr>
+ * @author Pierrick AUBIN <fungio76@gmail.com>
  */
 class GoogleCalendar
 {

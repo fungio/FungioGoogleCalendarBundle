@@ -8,7 +8,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  * Class Configuration
  * @package Fungio\GoogleCalendarBundle\DependencyInjection
  *
- * @author Pierrick AUBIN <pierrick.aubin@siqual.fr>
+ * @author Pierrick AUBIN <fungio76@gmail.com>
  */
 class Configuration implements ConfigurationInterface
 {
