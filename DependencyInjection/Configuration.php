@@ -21,9 +21,13 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('fungio_google_calendar');
         $rootNode
             ->children()
-                ->scalarNode('application_name')->end()
-                ->scalarNode('credentials_path')->end()
-                ->scalarNode('client_secret_path')->end()
+                ->arrayNode('google_calendar')->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('application_name')->end()
+                        ->scalarNode('credentials_path')->end()
+                        ->scalarNode('client_secret_path')->end()
+                    ->end()
+                ->end()
             ->end()
         ;
         return $treeBuilder;
