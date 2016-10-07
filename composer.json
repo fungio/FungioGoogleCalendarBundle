@@ -1,0 +1,35 @@
+{
+  "name": "fungio/google-calendar-bundle",
+  "type": "symfony-bundle",
+  "description": "Provides a google calendar integration for your Symfony 3 Project.",
+  "keywords": [
+    "google calendar"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Pierrick AUBIN",
+      "email": "pierrick.aubin@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.6.0",
+    "symfony/framework-bundle": "3.*",
+    "require google/apiclient": "^2.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.0",
+    "symfony/yaml": "~2.0",
+    "twig/twig": "~1.12"
+  },
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-0": {
+      "Fungio\\GoogleCalendarBundle\\": ""
+    }
+  },
+  "target-dir": "Fungio/GoogleCalendarBundle",
+  "config": {
+    "bin-dir": "bin/"
+  }
+}
