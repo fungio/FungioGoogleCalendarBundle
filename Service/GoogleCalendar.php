@@ -1,6 +1,6 @@
 <?php
+
 namespace Fungio\GoogleCalendarBundle\Service;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Class GoogleCalendar
@@ -105,8 +105,7 @@ class GoogleCalendar
                 }
                 file_put_contents($credentialsPath, json_encode($accessToken));
             } else {
-                $authUrl = $client->createAuthUrl();
-                return $authUrl;
+                return $client->createAuthUrl();
             }
         }
         $client->setAccessToken($accessToken);
@@ -117,5 +116,41 @@ class GoogleCalendar
             file_put_contents($credentialsPath, json_encode($client->getAccessToken()));
         }
         return $client;
+    }
+
+    /**
+     * Retrieve Google events on a date range
+     *
+     * @param string $calendarId
+     * @param \DateTime $start Range start
+     * @param \DateTime $end Range end
+     *
+     * @return object
+     */
+    public function getEventsOnRange($calendarId, \Datetime $start, \Datetime $end)
+    {
+        $service = $this->getCalendarService();
+
+        $timeMin = $start->format(\DateTime::RFC3339);
+        $timeMax = $end->format(\DateTime::RFC3339);
+        // Params to send to Google
+        $eventOptions = array(
+            'timeMin' => $timeMin,
+            'timeMax' => $timeMax
+        );
+        $eventList = $service->events->listEvents($calendarId, $eventOptions);
+        return $eventList;
+    }
+
+    /**
+     * @return \Google_Service_Calendar|null
+     */
+    public function getCalendarService()
+    {
+        $client = $this->getClient();
+        if (!is_string($client)) {
+            return new \Google_Service_Calendar($this->getClient());
+        }
+        return null;
     }
 }
