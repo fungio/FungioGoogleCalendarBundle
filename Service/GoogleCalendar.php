@@ -241,8 +241,11 @@ class GoogleCalendar
 
         $timeMin = $start->format(\DateTime::RFC3339);
         $timeMax = $end->format(\DateTime::RFC3339);
+
         // Params to send to Google
         $eventOptions = array(
+            'orderBy' => 'startTime',
+            'singleEvents' => true,
             'timeMin' => $timeMin,
             'timeMax' => $timeMax
         );
