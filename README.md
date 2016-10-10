@@ -8,7 +8,9 @@ Please feel free to contribute, to fork, to send merge request and to create tic
 ### Create a API account
 
 https://console.developers.google.com
-Choose Server to Server type
+Create an oauth ID. Do not forget the redirect Uri.
+Click on "Download JSON" to get your client_secret.json
+
 
 ## Installation
 ### Step 1: Install GoogleCalendarBundle
