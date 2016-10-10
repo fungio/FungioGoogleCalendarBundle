@@ -38,9 +38,9 @@ public function registerBundles()
 
 Copy your client_secret.json file for example in app/Resources/GoogleCalendarBundle/client_secret.json
 
+```yml
 // app/config/parameters.yml
 
-```yml
     fungio_google_calendar:
         google_calendar:
             application_name: "Google Calendar"
