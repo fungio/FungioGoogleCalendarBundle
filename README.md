@@ -47,3 +47,27 @@ fungio_google_calendar:
         credentials_path: "%kernel.root_dir%/.credentials/calendar.json"
         client_secret_path: "%kernel.root_dir%/Resources/GoogleCalendarBundle/client_secret.json"
 ```
+
+
+## Example
+
+``` php
+<?php
+// in a controller
+$request = $this->getMasterRequest();
+
+$googleCalendar = $this->get('fungio.google_calendar');
+$googleCalendar->setRedirectUri($redirectUri);
+
+if ($request->query->has('code') && $request->get('code')) {
+    $client = $googleCalendar->getClient($request->get('code'));
+} else {
+    $client = $googleCalendar->getClient();
+}
+
+if (is_string($client)) {
+    return new RedirectResponse($client);
+}
+
+$events = $googleCalendar->getEventsForDate('primary', new \DateTime('now');
+```
