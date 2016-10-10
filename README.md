@@ -31,10 +31,10 @@ composer require fungio/google-calendar-bundle:dev-master
 
 public function registerBundles()
 {
-    $bundles = array(
+    $bundles = [
         // ...
         new Fungio\GoogleCalendarBundle\FungioGoogleCalendarBundle()
-    );
+    ];
 }
 ```
 

@@ -248,12 +248,12 @@ class GoogleCalendar
         $timeMax = $end->format(\DateTime::RFC3339);
 
         // Params to send to Google
-        $eventOptions = array(
+        $eventOptions = [
             'orderBy' => 'startTime',
             'singleEvents' => true,
             'timeMin' => $timeMin,
             'timeMax' => $timeMax
-        );
+        ];
         $eventList = $service->events->listEvents($calendarId, $eventOptions);
         return $eventList;
     }
@@ -277,12 +277,12 @@ class GoogleCalendar
         $timeMax = $end->format(\DateTime::RFC3339);
 
         // Params to send to Google
-        $eventOptions = array(
+        $eventOptions = [
             'orderBy' => 'startTime',
             'singleEvents' => true,
             'timeMin' => $timeMin,
             'timeMax' => $timeMax
-        );
+        ];
         $eventList = $service->events->listEvents($calendarId, $eventOptions);
         return $eventList;
     }
