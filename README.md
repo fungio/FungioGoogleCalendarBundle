@@ -39,12 +39,11 @@ public function registerBundles()
 Copy your client_secret.json file for example in app/Resources/GoogleCalendarBundle/client_secret.json
 
 ```yml
-// app/config/parameters.yml
+# app/config/parameters.yml
 
-    fungio_google_calendar:
-        google_calendar:
-            application_name: "Google Calendar"
-            credentials_path: "%kernel.root_dir%/.credentials/calendar.json"
-            client_secret_path: "%kernel.root_dir%/Resources/GoogleCalendarBundle/client_secret.json"
-
+fungio_google_calendar:
+    google_calendar:
+        application_name: "Google Calendar"
+        credentials_path: "%kernel.root_dir%/.credentials/calendar.json"
+        client_secret_path: "%kernel.root_dir%/Resources/GoogleCalendarBundle/client_secret.json"
 ```
