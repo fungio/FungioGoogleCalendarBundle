@@ -7,8 +7,10 @@ Please feel free to contribute, to fork, to send merge request and to create tic
 ## Requirement
 ### Create a API account
 
-https://console.developers.google.com
+Go to the developers console : https://console.developers.google.com
+
 Create an oauth ID. Do not forget the redirect Uri.
+
 Click on "Download JSON" to get your client_secret.json
 
 
