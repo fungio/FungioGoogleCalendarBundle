@@ -112,8 +112,13 @@ class GoogleCalendar
 
         // Refresh the token if it's expired.
         if ($client->isAccessTokenExpired()) {
-            $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
-            file_put_contents($credentialsPath, json_encode($client->getAccessToken()));
+            if ($client->getRefreshToken()) {
+                $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
+                file_put_contents($credentialsPath, json_encode($client->getAccessToken()));
+            } else {
+                unlink($credentialsPath);
+                return $client->createAuthUrl();
+            }
         }
         return $client;
     }
@@ -239,6 +244,35 @@ class GoogleCalendar
     {
         $service = $this->getCalendarService();
 
+        $timeMin = $start->format(\DateTime::RFC3339);
+        $timeMax = $end->format(\DateTime::RFC3339);
+
+        // Params to send to Google
+        $eventOptions = array(
+            'orderBy' => 'startTime',
+            'singleEvents' => true,
+            'timeMin' => $timeMin,
+            'timeMax' => $timeMax
+        );
+        $eventList = $service->events->listEvents($calendarId, $eventOptions);
+        return $eventList;
+    }
+
+    /**
+     * Retrieve Google events for a date
+     *
+     * @param $calendarId
+     * @param \Datetime $date
+     * @return \Google_Service_Calendar_Events
+     */
+    public function getEventsForDate($calendarId, \Datetime $date)
+    {
+        $service = $this->getCalendarService();
+
+        $start = clone $date;
+        $start->setTime(0, 0, 0);
+        $end = clone $date;
+        $end->setTime(23, 59, 29);
         $timeMin = $start->format(\DateTime::RFC3339);
         $timeMax = $end->format(\DateTime::RFC3339);
 
