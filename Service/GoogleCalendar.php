@@ -40,7 +40,7 @@ class GoogleCalendar
      */
     public function __construct()
     {
-        $this->scopes = implode(' ', [\Google_Service_Calendar::CALENDAR_READONLY]);
+        $this->scopes = implode(' ', [\Google_Service_Calendar::CALENDAR]);
     }
 
     /**
@@ -219,6 +219,19 @@ class GoogleCalendar
     public function updateEvent($calendarId, $event)
     {
         $this->getCalendarService()->events->update($calendarId, $event->getId(), $event);
+    }
+
+    /**
+     * Get an event
+     *
+     * @param $calendarId
+     * @param $eventId
+     * @param array $optParams
+     * @return \Google_Service_Calendar_Event
+     */
+    public function getEvent($calendarId, $eventId, $optParams = [])
+    {
+        return $this->getCalendarService()->events->get($calendarId, $eventId, $optParams);
     }
 
     /**
