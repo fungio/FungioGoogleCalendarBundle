@@ -216,7 +216,10 @@ class GoogleCalendar
             }
 
             if ($refreshToken) {
-                $client->fetchAccessTokenWithRefreshToken($refreshToken);
+                $res = $client->fetchAccessTokenWithRefreshToken($refreshToken);
+                if (!isset($res['access_token'])) {
+                    return $client->createAuthUrl();
+                }
                 if ($fromFile) {
                     file_put_contents($credentialsPath, json_encode($client->getAccessToken()));
                 } else {
