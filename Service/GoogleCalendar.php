@@ -36,6 +36,11 @@ class GoogleCalendar
     protected $redirectUri;
 
     /**
+     * @var array
+     */
+    protected $parameters = [];
+
+    /**
      * construct
      */
     public function __construct()
@@ -76,6 +81,32 @@ class GoogleCalendar
     }
 
     /**
+     * @param $parameters
+     */
+    public function setParameters($parameters)
+    {
+        $this->parameters = $parameters;
+    }
+
+    /**
+     * @param $inputStr
+     * @return string
+     */
+    public static function base64UrlEncode($inputStr)
+    {
+        return strtr(base64_encode($inputStr), '+/=', '-_,');
+    }
+
+    /**
+     * @param $inputStr
+     * @return string
+     */
+    public static function base64UrlDecode($inputStr)
+    {
+        return base64_decode(strtr($inputStr, '-_,', '+/='));
+    }
+
+    /**
      * @param null $authCode
      * @return \Google_Client|string
      */
@@ -86,6 +117,7 @@ class GoogleCalendar
         $client->setScopes($this->scopes);
         $client->setAuthConfig($this->clientSecretPath);
         $client->setAccessType('offline');
+        $client->setState($this->base64UrlEncode(json_encode($this->parameters)));
 
         // Load previously authorized credentials from a file.
         $credentialsPath = $this->credentialsPath;
