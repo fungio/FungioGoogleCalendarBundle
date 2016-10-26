@@ -108,7 +108,9 @@ class GoogleCalendar
      */
     public function setAccessToken($accessToken)
     {
-        $this->accessToken = $accessToken;
+        if ($accessToken != "") {
+            $this->accessToken = $accessToken;
+        }
     }
 
     /**
@@ -116,7 +118,9 @@ class GoogleCalendar
      */
     public function setRefreshToken($refreshToken)
     {
-        $this->refreshToken = $refreshToken;
+        if ($refreshToken != "") {
+            $this->refreshToken = $refreshToken;
+        }
     }
 
     /**
