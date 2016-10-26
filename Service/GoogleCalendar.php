@@ -51,6 +51,11 @@ class GoogleCalendar
     protected $refreshToken;
 
     /**
+     * @var bool
+     */
+    protected $fromFile = true;
+
+    /**
      * construct
      */
     public function __construct()
@@ -155,6 +160,8 @@ class GoogleCalendar
      */
     public function getClient($authCode = null, $fromFile = true)
     {
+        $this->fromFile = $fromFile;
+
         $client = new \Google_Client();
         $client->setApplicationName($this->applicationName);
         $client->setScopes($this->scopes);
@@ -437,9 +444,9 @@ class GoogleCalendar
      */
     public function getCalendarService()
     {
-        $client = $this->getClient();
+        $client = $this->getClient(null, $this->fromFile);
         if (!is_string($client)) {
-            return new \Google_Service_Calendar($this->getClient());
+            return new \Google_Service_Calendar($client);
         }
         return null;
     }
