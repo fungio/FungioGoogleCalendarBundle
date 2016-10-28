@@ -251,15 +251,15 @@ class GoogleCalendar
     /**
      * Add an Event to the specified calendar
      *
-     * @param string $calendarId Calendar's ID in which you want to insert your event
-     * @param \DateTime $eventStart Event's start date
-     * @param \DateTime $eventEnd Event's end date
-     * @param string $eventSummary Event's title
-     * @param string $eventDescription Event's description where you should put all your informations
-     * @param array $eventAttendee Event's attendees : to use the invitation system you should add the calendar owner to the attendees
-     * @param array $optionalParams Optional params
-     *
-     * @return object Event
+     * @param $calendarId
+     * @param $eventStart
+     * @param $eventEnd
+     * @param $eventSummary
+     * @param $eventDescription
+     * @param $eventAttendee
+     * @param string $location
+     * @param array $optionalParams
+     * @return \Google_Service_Calendar_Event
      */
     public function addEvent(
         $calendarId,
@@ -268,6 +268,7 @@ class GoogleCalendar
         $eventSummary,
         $eventDescription,
         $eventAttendee,
+        $location = "",
         $optionalParams = []
     )
     {
@@ -292,6 +293,9 @@ class GoogleCalendar
         $attendee = new \Google_Service_Calendar_EventAttendee();
         $attendee->setEmail($eventAttendee);
         $event->attendees = [$attendee];
+        if ($location != "") {
+            $event->setLocation($location);
+        }
         // Event insert
         return $this->getCalendarService()->events->insert($calendarId, $event, $optionalParams);
     }
