@@ -171,6 +171,7 @@ class GoogleCalendar
         $client->setScopes($this->scopes);
         $client->setAuthConfig($this->clientSecretPath);
         $client->setAccessType('offline');
+        $client->setApprovalPrompt('force');
         $client->setState($this->base64UrlEncode(json_encode($this->parameters)));
 
         // Load previously authorized credentials from a file.
