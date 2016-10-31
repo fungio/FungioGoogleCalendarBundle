@@ -267,7 +267,7 @@ class GoogleCalendar
         $eventEnd,
         $eventSummary,
         $eventDescription,
-        $eventAttendee,
+        $eventAttendee = "",
         $location = "",
         $optionalParams = []
     )
@@ -290,9 +290,11 @@ class GoogleCalendar
         // Set event's description
         $event->setDescription($eventDescription);
         // Attendees - permit to manage the event's status
-        $attendee = new \Google_Service_Calendar_EventAttendee();
-        $attendee->setEmail($eventAttendee);
-        $event->attendees = [$attendee];
+        if ($eventAttendee != "") {
+            $attendee = new \Google_Service_Calendar_EventAttendee();
+            $attendee->setEmail($eventAttendee);
+            $event->attendees = [$attendee];
+        }
         if ($location != "") {
             $event->setLocation($location);
         }
