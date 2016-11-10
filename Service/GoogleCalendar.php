@@ -124,6 +124,15 @@ class GoogleCalendar
     }
 
     /**
+     * clear tokens
+     */
+    public function clearTokens()
+    {
+        $this->accessToken = "";
+        $this->refreshToken = "";
+    }
+
+    /**
      * @param $inputStr
      * @return string
      */
@@ -292,9 +301,19 @@ class GoogleCalendar
         $event->setDescription($eventDescription);
         // Attendees - permit to manage the event's status
         if ($eventAttendee != "") {
-            $attendee = new \Google_Service_Calendar_EventAttendee();
-            $attendee->setEmail($eventAttendee);
-            $event->attendees = [$attendee];
+            $attendees = [];
+
+            if (!is_array($eventAttendee)) {
+                $eventAttendee = explode(';', $eventAttendee);
+            }
+
+            foreach ($eventAttendee as $ea) {
+                $attendee = new \Google_Service_Calendar_EventAttendee();
+                $attendee->setEmail($ea);
+                $attendees[] = $attendee;
+            }
+
+            $event->attendees = $attendees;
         }
         if ($location != "") {
             $event->setLocation($location);
