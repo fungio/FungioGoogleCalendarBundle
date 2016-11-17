@@ -6,7 +6,7 @@ namespace Fungio\GoogleCalendarBundle\Service;
  * Class GoogleCalendar
  * @package Fungio\GoogleCalendarBundle\Service
  *
- * @author Pierrick AUBIN <fungio76@gmail.com>
+ * @author  Pierrick AUBIN <fungio76@gmail.com>
  */
 class GoogleCalendar
 {
@@ -134,6 +134,7 @@ class GoogleCalendar
 
     /**
      * @param $inputStr
+     *
      * @return string
      */
     public static function base64UrlEncode($inputStr)
@@ -143,6 +144,7 @@ class GoogleCalendar
 
     /**
      * @param $inputStr
+     *
      * @return string
      */
     public static function base64UrlDecode($inputStr)
@@ -167,8 +169,9 @@ class GoogleCalendar
     }
 
     /**
-     * @param null $authCode
+     * @param null      $authCode
      * @param bool|true $fromFile
+     *
      * @return \Google_Client|string
      */
     public function getClient($authCode = null, $fromFile = true)
@@ -252,48 +255,60 @@ class GoogleCalendar
                 } else {
                     $this->accessToken = null;
                 }
+
                 return $client->createAuthUrl();
             }
         }
+
         return $client;
     }
 
     /**
      * Add an Event to the specified calendar
      *
-     * @param $calendarId
-     * @param $eventStart
-     * @param $eventEnd
-     * @param $eventSummary
-     * @param $eventDescription
-     * @param $eventAttendee
-     * @param string $location
-     * @param array $optionalParams
+     * @param string       $calendarId
+     * @param \DateTime    $eventStart
+     * @param \DateTime    $eventEnd
+     * @param string       $eventSummary
+     * @param string       $eventDescription
+     * @param string|array $eventAttendee
+     * @param string       $location
+     * @param array        $optionalParams
+     * @param boolean      $allDay
+     *
      * @return \Google_Service_Calendar_Event
      */
     public function addEvent(
         $calendarId,
-        $eventStart,
-        $eventEnd,
+        \DateTime $eventStart,
+        \DateTime $eventEnd,
         $eventSummary,
         $eventDescription,
         $eventAttendee = "",
         $location = "",
-        $optionalParams = []
+        $optionalParams = [],
+        $allDay = false
     )
     {
         // Your new GoogleEvent object
         $event = new \Google_Service_Calendar_Event();
         // Set the title
         $event->setSummary($eventSummary);
-        // Set and format the start date
-        $formattedStart = $eventStart->format(\DateTime::RFC3339);
-        $formattedEnd = $eventEnd->format(\DateTime::RFC3339);
+
         $start = new \Google_Service_Calendar_EventDateTime();
-        $start->setDateTime($formattedStart);
-        $event->setStart($start);
         $end = new \Google_Service_Calendar_EventDateTime();
-        $end->setDateTime($formattedEnd);
+        if ($allDay) {
+            $formattedStart = $eventStart->format('Y-m-d');
+            $formattedEnd = $eventEnd->format('Y-m-d');
+            $start->setDate($formattedStart);
+            $end->setDate($formattedEnd);
+        } else {
+            $formattedStart = $eventStart->format(\DateTime::RFC3339);
+            $formattedEnd = $eventEnd->format(\DateTime::RFC3339);
+            $start->setDateTime($formattedStart);
+            $end->setDateTime($formattedEnd);
+        }
+        $event->setStart($start);
         $event->setEnd($end);
         // Default status for newly created event
         $event->setStatus('tentative');
@@ -318,6 +333,7 @@ class GoogleCalendar
         if ($location != "") {
             $event->setLocation($location);
         }
+
         // Event insert
         return $this->getCalendarService()->events->insert($calendarId, $event, $optionalParams);
     }
@@ -334,6 +350,7 @@ class GoogleCalendar
     {
         // Option array
         $optParams = [];
+
         return $this->getCalendarService()->events->listEvents($calendarId, $optParams);
     }
 
@@ -347,6 +364,7 @@ class GoogleCalendar
     public function initEventsList($calendarId)
     {
         $eventsList = $this->getCalendarService()->events->listEvents($calendarId);
+
         return $eventsList->getItems();
     }
 
@@ -364,7 +382,7 @@ class GoogleCalendar
     /**
      * Update an event
      *
-     * @param string $calendarId
+     * @param string                         $calendarId
      * @param \Google_Service_Calendar_Event $event
      */
     public function updateEvent($calendarId, $event)
@@ -375,9 +393,10 @@ class GoogleCalendar
     /**
      * Get an event
      *
-     * @param $calendarId
-     * @param $eventId
+     * @param       $calendarId
+     * @param       $eventId
      * @param array $optParams
+     *
      * @return \Google_Service_Calendar_Event
      */
     public function getEvent($calendarId, $eventId, $optParams = [])
@@ -387,25 +406,27 @@ class GoogleCalendar
 
     /**
      * @param int $maxResults
+     *
      * @return array
      */
     public function listContacts($maxResults = 200)
     {
         $accessToken = json_decode($this->getAccessToken(), 1)['access_token'];
-        $url = 'https://www.google.com/m8/feeds/contacts/default/full?max-results='.$maxResults.'&alt=json&v=3.0&oauth_token='.$accessToken;
-        $xmlresponse =  $this->curl($url);
-        $contacts = json_decode($xmlresponse,true);
+        $url = 'https://www.google.com/m8/feeds/contacts/default/full?max-results=' . $maxResults . '&alt=json&v=3.0&oauth_token=' . $accessToken;
+        $xmlresponse = $this->curl($url);
+        $contacts = json_decode($xmlresponse, true);
 
         $return = [];
         if (!empty($contacts['feed']['entry'])) {
-            foreach($contacts['feed']['entry'] as $contact) {
+            foreach ($contacts['feed']['entry'] as $contact) {
                 //retrieve Name and email address
                 $return[] = [
-                    'name'=> $contact['title']['$t'],
+                    'name'  => $contact['title']['$t'],
                     'email' => $contact['gd$email'][0]['address'],
                 ];
             }
         }
+
         return $return;
     }
 
@@ -422,9 +443,9 @@ class GoogleCalendar
     /**
      * Retrieve Google events on a date range
      *
-     * @param string $calendarId
+     * @param string    $calendarId
      * @param \DateTime $start Range start
-     * @param \DateTime $end Range end
+     * @param \DateTime $end   Range end
      *
      * @return object
      */
@@ -437,20 +458,22 @@ class GoogleCalendar
 
         // Params to send to Google
         $eventOptions = [
-            'orderBy' => 'startTime',
+            'orderBy'      => 'startTime',
             'singleEvents' => true,
-            'timeMin' => $timeMin,
-            'timeMax' => $timeMax
+            'timeMin'      => $timeMin,
+            'timeMax'      => $timeMax
         ];
         $eventList = $service->events->listEvents($calendarId, $eventOptions);
+
         return $eventList;
     }
 
     /**
      * Retrieve Google events for a date
      *
-     * @param $calendarId
+     * @param           $calendarId
      * @param \Datetime $date
+     *
      * @return \Google_Service_Calendar_Events
      */
     public function getEventsForDate($calendarId, \Datetime $date)
@@ -466,12 +489,13 @@ class GoogleCalendar
 
         // Params to send to Google
         $eventOptions = [
-            'orderBy' => 'startTime',
+            'orderBy'      => 'startTime',
             'singleEvents' => true,
-            'timeMin' => $timeMin,
-            'timeMax' => $timeMax
+            'timeMin'      => $timeMin,
+            'timeMax'      => $timeMax
         ];
         $eventList = $service->events->listEvents($calendarId, $eventOptions);
+
         return $eventList;
     }
 
@@ -479,7 +503,7 @@ class GoogleCalendar
      * Retrieve Google events filtered by parameters
      *
      * @param string $calendarId
-     * @param array $eventOptions
+     * @param array  $eventOptions
      *
      * @return object
      */
@@ -490,6 +514,7 @@ class GoogleCalendar
             if (isset($eventOptions[$opt])) $eventOptions[$opt] = $eventOptions[$opt]->format(\DateTime::RFC3339);
         }
         $eventList = $service->events->listEvents($calendarId, $eventOptions);
+
         return $eventList;
     }
 
@@ -502,12 +527,14 @@ class GoogleCalendar
         if (!is_string($client)) {
             return new \Google_Service_Calendar($client);
         }
+
         return null;
     }
 
     /**
-     * @param $url
+     * @param        $url
      * @param string $post
+     *
      * @return mixed
      */
     public function curl($url, $post = "")
@@ -516,7 +543,7 @@ class GoogleCalendar
         $userAgent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.1.4322)';
         curl_setopt($curl, CURLOPT_URL, $url);
         //The URL to fetch. This can also be set when initializing a session with curl_init().
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         //TRUE to return the transfer as a string of the return value of curl_exec() instead of outputting it out directly.
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
         //The number of seconds to wait while trying to connect.
@@ -526,16 +553,17 @@ class GoogleCalendar
         }
         curl_setopt($curl, CURLOPT_USERAGENT, $userAgent);
         //The contents of the "User-Agent: " header to be used in a HTTP request.
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         //To follow any "Location: " header that the server sends as part of the HTTP header.
-        curl_setopt($curl, CURLOPT_AUTOREFERER, TRUE);
+        curl_setopt($curl, CURLOPT_AUTOREFERER, true);
         //To automatically set the Referer: field in requests where it follows a Location: redirect.
         curl_setopt($curl, CURLOPT_TIMEOUT, 10);
         //The maximum number of seconds to allow cURL functions to execute.
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         //To stop cURL from verifying the peer's certificate.
         $contents = curl_exec($curl);
         curl_close($curl);
+
         return $contents;
     }
 
