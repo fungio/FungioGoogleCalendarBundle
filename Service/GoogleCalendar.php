@@ -60,7 +60,43 @@ class GoogleCalendar
      */
     public function __construct()
     {
-        $this->scopes = implode(' ', [\Google_Service_Calendar::CALENDAR, \Google_Service_Script::WWW_GOOGLE_COM_M8_FEEDS]);
+        $this->scopes = implode(' ', [\Google_Service_Calendar::CALENDAR]);
+    }
+
+    /**
+     * @param $scope
+     */
+    public function addScope($scope)
+    {
+        $this->scopes .= ' ' . $scope;
+    }
+
+    /**
+     * @param $scope
+     */
+    public function removeScope($scope)
+    {
+        $scopes = explode(' ', $this->scopes);
+        if (($key = array_search($scope, $scopes)) !== false) {
+            unset($scopes[$key]);
+        }
+        $this->scopes = implode(' ', $scopes);
+    }
+
+    /**
+     * Remove calendar scope
+     */
+    public function removeScopeCalendar()
+    {
+        $this->removeScope(\Google_Service_Calendar::CALENDAR);
+    }
+
+    /**
+     * Add contact scope
+     */
+    public function addScopeContact()
+    {
+        $this->addScope(\Google_Service_Script::WWW_GOOGLE_COM_M8_FEEDS);
     }
 
     /**
@@ -419,11 +455,13 @@ class GoogleCalendar
         $return = [];
         if (!empty($contacts['feed']['entry'])) {
             foreach ($contacts['feed']['entry'] as $contact) {
-                //retrieve Name and email address
-                $return[] = [
-                    'name'  => $contact['title']['$t'],
-                    'email' => $contact['gd$email'][0]['address'],
-                ];
+                if (isset($contact['gd$email'])) {
+                    //retrieve Name and email address
+                    $return[] = [
+                        'name'  => $contact['title']['$t'],
+                        'email' => $contact['gd$email'][0]['address'],
+                    ];
+                }
             }
         }
 
