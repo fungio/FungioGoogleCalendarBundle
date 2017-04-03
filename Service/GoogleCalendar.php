@@ -84,7 +84,15 @@ class GoogleCalendar
     }
 
     /**
-     * Remove calendar scope
+     * Add contact scope
+     */
+    public function addScopeContact()
+    {
+        $this->addScope(\Google_Service_Script::WWW_GOOGLE_COM_M8_FEEDS);
+    }
+
+    /**
+     * Remove contact scope
      */
     public function removeScopeCalendar()
     {
@@ -92,11 +100,21 @@ class GoogleCalendar
     }
 
     /**
-     * Add contact scope
+     * Add userinfo scope
      */
-    public function addScopeContact()
+    public function addScopeUserInfos()
     {
-        $this->addScope(\Google_Service_Script::WWW_GOOGLE_COM_M8_FEEDS);
+        $this->addScope(\Google_Service_Oauth2::USERINFO_PROFILE);
+        $this->addScope(\Google_Service_Oauth2::USERINFO_EMAIL);
+    }
+
+    /**
+     * Remove userinfo scope
+     */
+    public function removeScopeUserInfos()
+    {
+        $this->removeScope(\Google_Service_Oauth2::USERINFO_PROFILE);
+        $this->removeScope(\Google_Service_Oauth2::USERINFO_EMAIL);
     }
 
     /**
@@ -572,6 +590,17 @@ class GoogleCalendar
     }
 
     /**
+     * @return \Google_Service_Oauth2_Userinfoplus
+     */
+    public function getUserInfos()
+    {
+        $oauth2 = $this->getOauth2Service();
+        $userInfo = $oauth2->userinfo->get();
+
+        return $userInfo;
+    }
+
+    /**
      * Retrieve Google events for a date
      *
      * @param           $calendarId
@@ -629,6 +658,19 @@ class GoogleCalendar
         $client = $this->getClient(null, $this->fromFile);
         if (!is_string($client)) {
             return new \Google_Service_Calendar($client);
+        }
+
+        return null;
+    }
+
+    /**
+     * @return \Google_Service_Oauth2|null
+     */
+    public function getOauth2Service()
+    {
+        $client = $this->getClient(null, $this->fromFile);
+        if (!is_string($client)) {
+            return new \Google_Service_Oauth2($client);
         }
 
         return null;
