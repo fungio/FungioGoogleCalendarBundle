@@ -56,10 +56,22 @@ class GoogleCalendar
     protected $fromFile = true;
 
     /**
+     * @var string
+     */
+    protected $type;
+
+    /**
+     * @var string
+     */
+    protected $approvalPrompt;
+
+    /**
      * construct
      */
     public function __construct()
     {
+        $this->type = 'offline';
+        $this->approvalPrompt = 'force';
         $this->scopes = implode(' ', [\Google_Service_Calendar::CALENDAR]);
     }
 
@@ -97,6 +109,24 @@ class GoogleCalendar
     public function removeScopeCalendar()
     {
         $this->removeScope(\Google_Service_Calendar::CALENDAR);
+    }
+
+    /**
+     * Remove contact scope
+     */
+    public function removeScopeOffline()
+    {
+        $this->type = 'online';
+        $this->approvalPrompt = 'auto';
+    }
+
+    /**
+     * Remove contact scope
+     */
+    public function addScopeOffline()
+    {
+        $this->type = 'offline';
+        $this->approvalPrompt = 'force';
     }
 
     /**
@@ -236,8 +266,8 @@ class GoogleCalendar
         $client->setApplicationName($this->applicationName);
         $client->setScopes($this->scopes);
         $client->setAuthConfig($this->clientSecretPath);
-        $client->setAccessType('offline');
-        $client->setApprovalPrompt('force');
+        $client->setAccessType($this->type);
+        $client->setApprovalPrompt($this->approvalPrompt);
         $client->setState($this->base64UrlEncode(json_encode($this->parameters)));
 
         // Load previously authorized credentials from a file.
