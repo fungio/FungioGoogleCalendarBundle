@@ -399,17 +399,16 @@ class GoogleCalendar
         // Set event's description
         $event->setDescription($eventDescription);
         // Attendees - permit to manage the event's status
-        if ($eventAttendee != "") {
-            $attendees = [];
-
-            if (!is_array($eventAttendee)) {
-                $eventAttendee = explode(';', $eventAttendee);
-            }
-
+        if (!is_array($eventAttendee)) {
+            $eventAttendee = explode(';', $eventAttendee);
+        }
+        if (count($eventAttendee)) {
             foreach ($eventAttendee as $ea) {
-                $attendee = new \Google_Service_Calendar_EventAttendee();
-                $attendee->setEmail($ea);
-                $attendees[] = $attendee;
+                if ($ea != "") {
+                    $attendee = new \Google_Service_Calendar_EventAttendee();
+                    $attendee->setEmail($ea);
+                    $attendees[] = $attendee;
+                }
             }
 
             $event->attendees = $attendees;
@@ -516,17 +515,18 @@ class GoogleCalendar
         // Set event's description
         $event->setDescription($eventDescription);
         // Attendees - permit to manage the event's status
-        if ($eventAttendee != "") {
+        if (!is_array($eventAttendee)) {
+            $eventAttendee = explode(';', $eventAttendee);
+        }
+        if (count($eventAttendee)) {
             $attendees = [];
 
-            if (!is_array($eventAttendee)) {
-                $eventAttendee = explode(';', $eventAttendee);
-            }
-
             foreach ($eventAttendee as $ea) {
-                $attendee = new \Google_Service_Calendar_EventAttendee();
-                $attendee->setEmail($ea);
-                $attendees[] = $attendee;
+                if ($ea != "") {
+                    $attendee = new \Google_Service_Calendar_EventAttendee();
+                    $attendee->setEmail($ea);
+                    $attendees[] = $attendee;
+                }
             }
 
             $event->attendees = $attendees;
