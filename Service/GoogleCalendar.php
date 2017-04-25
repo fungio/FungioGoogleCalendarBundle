@@ -402,6 +402,7 @@ class GoogleCalendar
         if (!is_array($eventAttendee)) {
             $eventAttendee = explode(';', $eventAttendee);
         }
+        $attendees = [];
         if (count($eventAttendee)) {
             foreach ($eventAttendee as $ea) {
                 if ($ea != "") {

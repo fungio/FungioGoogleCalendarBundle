@@ -58,7 +58,7 @@ fungio_google_calendar:
 ``` php
 <?php
 // in a controller
-$request = $this->getMasterRequest();
+$request = $this->get('request_stack')->getMasterRequest();
 
 $googleCalendar = $this->get('fungio.google_calendar');
 $googleCalendar->setRedirectUri($redirectUri);
