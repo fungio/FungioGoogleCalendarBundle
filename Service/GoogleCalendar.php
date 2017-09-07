@@ -569,9 +569,6 @@ class GoogleCalendar
         $return = [];
         if (!empty($contacts['feed']['entry'])) {
             foreach ($contacts['feed']['entry'] as $contact) {
-                echo '<pre>';
-                print_r($contact);
-                echo '</pre>';
                 if (isset($contact['gd$email'])) {
                     //retrieve Name and email address
                     $return[] = [
