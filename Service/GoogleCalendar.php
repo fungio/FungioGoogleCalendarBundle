@@ -569,11 +569,16 @@ class GoogleCalendar
         $return = [];
         if (!empty($contacts['feed']['entry'])) {
             foreach ($contacts['feed']['entry'] as $contact) {
+                echo '<pre>';
+                print_r($contact);
+                echo '</pre>';
                 if (isset($contact['gd$email'])) {
                     //retrieve Name and email address
                     $return[] = [
-                        'name'  => $contact['title']['$t'],
-                        'email' => $contact['gd$email'][0]['address'],
+                        'name'      => $contact['title']['$t'],
+                        'firstname' => isset($contact['gd$name']) && isset($contact['gd$name']['gd$givenName']) && isset($contact['gd$name']['gd$givenName']['$t']) ? $contact['gd$name']['gd$givenName']['$t'] : '',
+                        'lastname'  => isset($contact['gd$name']) && isset($contact['gd$name']['gd$familyName']) && isset($contact['gd$name']['gd$familyName']['$t']) ? $contact['gd$name']['gd$familyName']['$t'] : '',
+                        'email'     => $contact['gd$email'][0]['address'],
                     ];
                 }
             }
