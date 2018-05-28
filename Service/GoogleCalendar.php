@@ -555,14 +555,19 @@ class GoogleCalendar
     }
 
     /**
-     * @param int $maxResults
+     * @param \DateTime|null $updatedAt
+     * @param int            $max
      *
      * @return array
      */
-    public function listContacts($maxResults = 200)
+    public function listContacts(\DateTime $updatedAt = null, $max = 2000)
     {
         $accessToken = json_decode($this->getAccessToken(), 1)['access_token'];
-        $url = 'https://www.google.com/m8/feeds/contacts/default/full?max-results=' . $maxResults . '&alt=json&v=3.0&oauth_token=' . $accessToken;
+        if (!is_null($updatedAt)) {
+            $url = 'https://www.google.com/m8/feeds/contacts/default/full?max-results=' . $max . '&updated-min=' . $updatedAt->format('Y-m-d\TH:i:s') . '&alt=json&v=3.0&oauth_token=' . $accessToken;
+        } else {
+            $url = 'https://www.google.com/m8/feeds/contacts/default/full?max-results=' . $max . '&alt=json&v=3.0&oauth_token=' . $accessToken;
+        }
         $xmlresponse = $this->curl($url);
         $contacts = json_decode($xmlresponse, true);
 
