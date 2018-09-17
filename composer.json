@@ -25,7 +25,7 @@
   "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
-      "arthurpietruch\\GoogleCalendarBundle\\": ""
+      "Fungio\\GoogleCalendarBundle\\": ""
     }
   },
   "target-dir": "Fungio/GoogleCalendarBundle",
