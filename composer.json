@@ -28,7 +28,6 @@
       "Fungio\\GoogleCalendarBundle\\": ""
     }
   },
-  "target-dir": "Fungio/GoogleCalendarBundle",
   "config": {
     "bin-dir": "bin/"
   }
