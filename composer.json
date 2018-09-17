@@ -1,5 +1,5 @@
 {
-  "name": "fungio/google-calendar-bundle",
+  "name": "arthurpietruch/google-calendar-bundle",
   "type": "symfony-bundle",
   "description": "Provides a google calendar integration for your Symfony 4 Project.",
   "keywords": [
