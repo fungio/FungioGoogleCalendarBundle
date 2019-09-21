@@ -10,7 +10,7 @@
     </parameters>
 
     <services>
-        <service id="fungio.google_calendar" class="%fungio.google_calendar.class%" />
+        <service id="fungio.google_calendar" class="%fungio.google_calendar.class%" public="true" />
     </services>
 
 </container>
