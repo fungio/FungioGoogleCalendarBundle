@@ -17,8 +17,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder('fungio_google_calendar');
-        $rootNode = $treeBuilder->getRootNode();
+        $treeBuilder = new TreeBuilder();
+        $rootNode = $treeBuilder->root('fungio_google_calendar');
         $rootNode
             ->children()
                 ->arrayNode('google_calendar')->addDefaultsIfNotSet()
