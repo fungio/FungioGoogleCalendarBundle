@@ -20,7 +20,7 @@ Click on "Download JSON" to get your client_secret.json
 Run
 
 ```bash
-composer require fungio/google-calendar-bundle:dev-master
+composer require fungio/google-calendar-bundle:3.*
 ```
 
 ### Step 2: Enable the bundle
