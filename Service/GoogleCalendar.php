@@ -104,6 +104,22 @@ class GoogleCalendar
     }
 
     /**
+     * Add contact scope
+     */
+    public function removeScopeContact()
+    {
+        $this->removeScope(\Google_Service_Script::WWW_GOOGLE_COM_M8_FEEDS);
+    }
+
+    /**
+     * Add contact scope
+     */
+    public function addScopeCalendar()
+    {
+        $this->addScope(\Google_Service_Calendar::CALENDAR);
+    }
+
+    /**
      * Remove contact scope
      */
     public function removeScopeCalendar()
@@ -114,19 +130,19 @@ class GoogleCalendar
     /**
      * Remove contact scope
      */
-    public function removeScopeOffline()
+    public function addScopeOffline()
     {
-        $this->type = 'online';
-        $this->approvalPrompt = 'auto';
+        $this->type = 'offline';
+        $this->approvalPrompt = 'force';
     }
 
     /**
      * Remove contact scope
      */
-    public function addScopeOffline()
+    public function removeScopeOffline()
     {
-        $this->type = 'offline';
-        $this->approvalPrompt = 'force';
+        $this->type = 'online';
+        $this->approvalPrompt = 'auto';
     }
 
     /**
