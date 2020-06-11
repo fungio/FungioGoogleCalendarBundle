@@ -104,7 +104,7 @@ class GoogleCalendar
     }
 
     /**
-     * Add contact scope
+     * Remove contact scope
      */
     public function removeScopeContact()
     {
@@ -112,7 +112,7 @@ class GoogleCalendar
     }
 
     /**
-     * Add contact scope
+     * Add calendar scope
      */
     public function addScopeCalendar()
     {
@@ -120,7 +120,7 @@ class GoogleCalendar
     }
 
     /**
-     * Remove contact scope
+     * Remove calendar scope
      */
     public function removeScopeCalendar()
     {
@@ -128,7 +128,7 @@ class GoogleCalendar
     }
 
     /**
-     * Remove contact scope
+     * Add offline scope
      */
     public function addScopeOffline()
     {
@@ -137,7 +137,7 @@ class GoogleCalendar
     }
 
     /**
-     * Remove contact scope
+     * Remove offline scope
      */
     public function removeScopeOffline()
     {
